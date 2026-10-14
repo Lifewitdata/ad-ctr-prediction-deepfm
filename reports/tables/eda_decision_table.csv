@@ -1,0 +1,12 @@
+type,finding,evidence,limitation,action
+observation,Schema matches the documented Criteo format; label clean 0/1,validate_schema OK; 40 columns; no label gaps,mirror provenance and original split construction unverified,proceed with this pool
+observation,Heavy class imbalance,train CTR 0.2568; constant log loss 0.5697; always-0 accuracy 0.743,-,log loss primary; no resampling; calibration measured in nb03
+observation,Structural missing values concentrated in specific columns,24 columns gappy; max 76.4%,anonymous features - the causes are unknowable,"train-median imputation (numeric), OOV index 0 (categorical)"
+observation,"Missing-vs-present CTR gaps, flagged by an a-priori rule",23 columns flagged of 24 gappy,multiple comparisons; missingness may proxy for traffic mix,features.add_missing_indicators = true for the 23 flagged columns (listed in config.yaml)
+observation,Heavy right skew; negative ranges in several columns,12 of 13 columns |skew| > 2.0; 1 columns contain negatives,skew measured on train only (by design),sign-preserving log1p + train-fitted z-scores; no outlier removal
+observation,Long-tail categorical vocabularies,"widest C3: 34,092 levels; 1.05% of train rows fall outside the >=10-support vocab (C1)","min_count=10 is a judgment call, revisited via model metrics",vocab keeps train levels with >=10 rows; rest -> shared OOV 0
+observation,Modest univariate signal,largest decile gap 40.26 pp (I6); max |numeric-numeric r| = 0.67,univariate view; effect sizes small,expect limited single-feature power; lean on interactions + strong regularisation
+observation,Leakage surfaces quantified and closed,in-sample C1 encoding AUC 0.519 vs out-of-fold 0.500; train-vs-val encoding gap shown,no timestamps - random split is the only honest option,no target encoding; train-fitted statistics; test split sealed until nb03
+observation,Partitions are distributionally consistent,max KS 0.0148; base-rate spread 0.00 pp; max unseen share 44.44% of val rows,random split != future traffic (no timestamps to do better),proceed to training (nb02); report unseen-input segments in nb03
+hypothesis,Interactions beyond pairwise may add signal (FM / deep components),heatmaps show structure but cell-level noise is real,EDA cannot separate signal from chance at this support,test on validation: DeepFM vs LR vs GBDT (nb02)
+hypothesis,Missingness itself is partially recoverable information,"CTR gaps for missing slices, above",may be redundant with imputed values for tree models,"if indicators enabled, ablate against imputation-only on validation"

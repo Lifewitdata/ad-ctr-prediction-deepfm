@@ -1,0 +1,70 @@
+{
+  "generated": "2026-10-14T20:52:17",
+  "selected_model": "logistic_regression",
+  "model_version": "nb02-20261014",
+  "selection_rule": "lowest validation log loss among {constant, logistic_regression, lightgbm, deepfm}",
+  "test_rows": 15002,
+  "test_base_rate": 0.2568324223436875,
+  "test_metrics": {
+    "n": 15002.0,
+    "base_rate": 0.256832,
+    "log_loss": 0.478927,
+    "roc_auc": 0.765559,
+    "average_precision": 0.54726,
+    "brier": 0.155999
+  },
+  "val_metrics": {
+    "n": 14999.0,
+    "base_rate": 0.256817,
+    "log_loss": 0.481416,
+    "roc_auc": 0.761273,
+    "average_precision": 0.542431,
+    "brier": 0.157061
+  },
+  "ece_test": 0.008051,
+  "latency_p50_p95_ms": {
+    "1": [
+      55.7,
+      87.03
+    ],
+    "32": [
+      60.92,
+      111.29
+    ],
+    "256": [
+      61.82,
+      99.6
+    ],
+    "1024": [
+      73.25,
+      161.95
+    ]
+  },
+  "segments": {
+    "all test rows": {
+      "n": 15002,
+      "log_loss": 0.47893
+    },
+    "rows with a missing input": {
+      "n": 14754,
+      "log_loss": 0.47777
+    },
+    "complete rows": {
+      "n": 248,
+      "log_loss": 0.54762
+    },
+    "rows with an unseen category": {
+      "n": 11927,
+      "log_loss": 0.48106
+    },
+    "rows with every category seen": {
+      "n": 3075,
+      "log_loss": 0.47066
+    }
+  },
+  "base_rates": {
+    "train": 0.2568,
+    "val": 0.25682,
+    "test": 0.25683
+  }
+}

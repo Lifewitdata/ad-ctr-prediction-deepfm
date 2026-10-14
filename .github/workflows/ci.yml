@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TF_CPP_MIN_LOG_LEVEL: "3"
+      TF_ENABLE_ONEDNN_OPTS: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run test suite
+        run: pytest -q

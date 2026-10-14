@@ -1,0 +1,61 @@
+# Central configuration for the ad CTR prediction project.
+# All scripts, notebooks and the API read from this single file.
+seed: 42
+
+data:
+  # Raw pool: community mirror of the Criteo Display Advertising Challenge training data
+  # (45,840,617 rows in total; this file is the mirror's 4,584,062-row partition).
+  # Provenance, licence notes and the sha256 checksum live in README.md and scripts/download_data.py.
+  raw_path: data/raw/criteo_pool.parquet
+  sample_path: data/processed/sample_dev.parquet
+  splits_dir: data/processed/splits
+  sample_rows: 100000        # development sample; set to null to use every row in raw_path
+  batch_rows: 131072         # chunk size for streaming reads (keeps memory bounded)
+  # Sampling method: simple random sample without replacement over row positions
+  # (numpy Generator(seed).choice), documented in README and notebook 01, section "Sampling".
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+
+features:
+  label_col: label
+  numeric_cols: [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13]
+  categorical_cols: [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10,
+                     C11, C12, C13, C14, C15, C16, C17, C18, C19, C20,
+                     C21, C22, C23, C24, C25, C26]
+  log_transform: skew_based   # sign-preserving log1p when |train skew| exceeds threshold
+  skew_threshold: 2.0
+  min_category_count: 10      # rarer values map to the shared OOV index 0
+  add_missing_indicators: true    # decision from notebook 01 section C: the a-priori
+                                  # rule (Wilson CIs disjoint AND |CTR gap| >= 0.5 pp)
+                                  # flagged 23 of the 24 gappy columns; C6 fails it
+                                  # (overlapping CIs) and stays unflagged
+  missing_indicator_columns: [I8, I6, I5, I10, I1, I7, I11, I9, I3, I12,
+                              C12, C21, C16, C3, C4, C24, C22, I4, I13, C26,
+                              C20, C19, C25]
+
+model:
+  logistic_regression:
+    max_iter: 1500
+    C: 1.0
+  lightgbm:
+    n_estimators: 800
+    learning_rate: 0.05
+    num_leaves: 63
+    min_child_samples: 50
+    subsample: 0.9
+    colsample_bytree: 0.9
+    reg_lambda: 1.0
+    early_stopping_rounds: 50
+  deepfm:
+    embedding_dim: 8
+    hidden_units: [64, 32]
+    dropout: 0.1
+    batch_size: 1024
+    max_epochs: 8
+    early_stopping_patience: 2
+    learning_rate: 0.001
+
+artifacts_dir: artifacts
+reports_dir: reports

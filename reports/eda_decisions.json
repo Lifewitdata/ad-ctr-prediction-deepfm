@@ -1,0 +1,56 @@
+{
+  "generated": "2026-10-14T20:25:56",
+  "seed": 42,
+  "sample_rows": 100000,
+  "split_rows": {
+    "train": 69999,
+    "val": 14999,
+    "test": 15002
+  },
+  "split_ctrs": {
+    "train": 0.256804,
+    "val": 0.256817,
+    "test": 0.256832
+  },
+  "skew_log1p_columns": [
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I5",
+    "I6",
+    "I7",
+    "I8",
+    "I9",
+    "I11",
+    "I12",
+    "I13"
+  ],
+  "min_category_count": 10,
+  "add_missing_indicators_recommended": true,
+  "flagged_missing_columns": [
+    "I8",
+    "I6",
+    "I5",
+    "I10",
+    "I1",
+    "I7",
+    "I11",
+    "I9",
+    "I3",
+    "I12",
+    "C12",
+    "C21",
+    "C16",
+    "C3",
+    "C4",
+    "C24",
+    "C22",
+    "I4",
+    "I13",
+    "C26",
+    "C20",
+    "C19",
+    "C25"
+  ]
+}

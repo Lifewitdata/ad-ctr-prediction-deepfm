@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "C:\\Users\\hp\\Documents\\Qoder\\2026-10-14\\55aa046d\\ad-ctr-prediction-deepfm\\venv\\Scripts\\python.exe",
+  "-Xfrozen_modules=off",
+  "-m",
+  "ipykernel_launcher",
+  "-f",
+  "{connection_file}"
+ ],
+ "display_name": "Python (ad-ctr-deepfm)",
+ "language": "python",
+ "metadata": {
+  "debugger": true
+ },
+ "kernel_protocol_version": "5.5"
+}
